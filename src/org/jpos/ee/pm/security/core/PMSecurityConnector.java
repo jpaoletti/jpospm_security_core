@@ -1,6 +1,6 @@
 /*
  * jPOS Project [http://jpos.org]
- * Copyright (C) 2000-2010 Alejandro P. Revilla
+ * Copyright (C) 2000-2011 Alejandro P. Revilla
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -33,7 +33,7 @@ public interface PMSecurityConnector{
     public List<PMSecurityUser> getUsers()                      throws PMSecurityException;
     public void addUser(PMSecurityUser user)                    throws PMSecurityException;
     public void updateUser(PMSecurityUser user)                 throws PMSecurityException;
-    public void removeUser(PMSecurityUser object)                       throws PMSecurityException;
+    public void removeUser(PMSecurityUser object)               throws PMSecurityException;
     
     public PMSecurityUserGroup getGroup(String id)              throws PMSecurityException;
     public List<PMSecurityUserGroup> getGroups()                throws PMSecurityException;

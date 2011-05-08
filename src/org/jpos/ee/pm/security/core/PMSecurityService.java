@@ -33,6 +33,7 @@ public class PMSecurityService extends QBeanSupport {
         }
     }
     
+    @Override
     protected void initService() throws Exception {
         getLog().info ("Security Manager activated");
         try {
