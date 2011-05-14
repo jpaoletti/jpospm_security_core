@@ -59,7 +59,7 @@ public abstract class PMSecurityAbstractConnector implements PMSecurityConnector
         if (user.isDeleted()) {
             throw new UserNotFoundException();
         }
-        if (!BCrypt.checkpw(password, user.getPassword())) {
+        if (password != null && !BCrypt.checkpw(password, user.getPassword())) {
             throw new InvalidPasswordException();
         }
         user.setPassword(encrypt(password));
