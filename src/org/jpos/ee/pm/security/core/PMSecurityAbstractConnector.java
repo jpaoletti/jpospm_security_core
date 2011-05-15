@@ -62,7 +62,7 @@ public abstract class PMSecurityAbstractConnector implements PMSecurityConnector
         if (password != null && !BCrypt.checkpw(password, user.getPassword())) {
             throw new InvalidPasswordException();
         }
-        user.setPassword(encrypt(password));
+        user.setPassword(encrypt(newpassword));
         updateUser(user);
     }
 
