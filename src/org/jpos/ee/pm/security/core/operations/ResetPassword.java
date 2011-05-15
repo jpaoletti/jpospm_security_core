@@ -20,25 +20,16 @@ package org.jpos.ee.pm.security.core.operations;
 import java.util.UUID;
 import org.jpos.ee.pm.core.PMContext;
 import org.jpos.ee.pm.core.PMException;
-import org.jpos.ee.pm.core.operations.OperationCommandSupport;
-import org.jpos.ee.pm.security.core.PMSecurityConnector;
-import org.jpos.ee.pm.security.core.PMSecurityException;
-import org.jpos.ee.pm.security.core.PMSecurityService;
 import org.jpos.ee.pm.security.core.PMSecurityUser;
 
 /**
  *
  * @author jpaoletti
  */
-public class ResetPassword extends OperationCommandSupport {
+public class ResetPassword extends SecurityOperation {
 
     public ResetPassword(String operationId) {
         super(operationId);
-    }
-
-    @Override
-    protected boolean openTransaction() {
-        return true;
     }
 
     @Override
@@ -51,11 +42,5 @@ public class ResetPassword extends OperationCommandSupport {
         getConnector(ctx).changePassword(u.getUsername(), null, generatedpsw);
         ctx.put("generatedpsw", generatedpsw);
         ctx.put("username", u.getUsername());
-
-    }
-
-    private PMSecurityConnector getConnector(PMContext ctx) {
-        return PMSecurityService.getService().getConnector(ctx);
-
     }
 }
