@@ -23,28 +23,31 @@ import org.jpos.util.NameRegistrar;
 import org.jpos.util.NameRegistrar.NotFoundException;
 
 public class PMSecurityService extends QBeanSupport {
+
     private PMSecurityConnector connector;
-    
-    public static PMSecurityService getService(){
+    private boolean multipleLogin;
+
+    public static PMSecurityService getService() {
         try {
             return (PMSecurityService) NameRegistrar.get(getCustomName());
         } catch (NotFoundException e) {
             return null;
         }
     }
-    
+
     @Override
     protected void initService() throws Exception {
-        getLog().info ("Security Manager activated");
+        getLog().info("Security Manager activated");
         try {
             connector = (PMSecurityConnector) getFactory().newInstance(cfg.get("connector"));
             connector.setService(this);
+            this.multipleLogin = cfg.getBoolean("multiple-login", true);
         } catch (Exception e) {
             getLog().error("Cannot load security connector", e);
         }
-        NameRegistrar.register (getCustomName(), this);
+        NameRegistrar.register(getCustomName(), this);
     }
-    
+
     public static String getCustomName() {
         return "security-manager";
     }
@@ -60,7 +63,17 @@ public class PMSecurityService extends QBeanSupport {
      * @return the connector
      */
     public PMSecurityConnector getConnector(PMContext ctx) {
-        if(connector != null) connector.setContext(ctx);
+        if (connector != null) {
+            connector.setContext(ctx);
+        }
         return connector;
+    }
+
+    public boolean isMultipleLogin() {
+        return multipleLogin;
+    }
+
+    public void setMultipleLogin(boolean multipleLogin) {
+        this.multipleLogin = multipleLogin;
     }
 }

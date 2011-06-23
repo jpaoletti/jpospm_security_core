@@ -17,7 +17,9 @@
  */
 package org.jpos.ee.pm.security.core;
 
+import java.util.Map.Entry;
 import org.jpos.ee.pm.core.PMContext;
+import org.jpos.ee.pm.core.PMSession;
 import org.jpos.ee.pm.security.jbcrypt.BCrypt;
 import org.jpos.util.Log;
 
@@ -43,6 +45,9 @@ public abstract class PMSecurityAbstractConnector implements PMSecurityConnector
         }
         if (!user.isActive()) {
             throw new UserNotActiveException();
+        }
+        if (isLoggedIn(user) && !service.isMultipleLogin()) {
+            throw new UserAlreadyLogged();
         }
         if (!BCrypt.checkpw(password, user.getPassword())) {
             throw new InvalidPasswordException();
@@ -106,5 +111,14 @@ public abstract class PMSecurityAbstractConnector implements PMSecurityConnector
     public void removeUser(PMSecurityUser user) throws PMSecurityException {
         user.setDeleted(true);
         updateUser(user);
+    }
+
+    private boolean isLoggedIn(PMSecurityUser user) {
+        for (Entry<String, PMSession> entry : ctx.getPresentationManager().getSessions().entrySet()) {
+            if (entry.getValue().getUser()!=null && entry.getValue().getUser().getUsername().equals(user.getUsername())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
