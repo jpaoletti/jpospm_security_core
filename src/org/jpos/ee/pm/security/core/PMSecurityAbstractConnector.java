@@ -17,9 +17,7 @@
  */
 package org.jpos.ee.pm.security.core;
 
-import java.util.Map.Entry;
 import org.jpos.ee.pm.core.PMContext;
-import org.jpos.ee.pm.core.PMSession;
 import org.jpos.ee.pm.security.jbcrypt.BCrypt;
 import org.jpos.util.Log;
 
@@ -114,11 +112,6 @@ public abstract class PMSecurityAbstractConnector implements PMSecurityConnector
     }
 
     private boolean isLoggedIn(PMSecurityUser user) {
-        for (Entry<String, PMSession> entry : ctx.getPresentationManager().getSessions().entrySet()) {
-            if (entry.getValue().getUser()!=null && entry.getValue().getUser().getUsername().equals(user.getUsername())) {
-                return true;
-            }
-        }
-        return false;
+        return ctx.getPresentationManager().getSessionByUser(user.getUsername()) != null;
     }
 }
