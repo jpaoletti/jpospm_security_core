@@ -19,6 +19,7 @@ package org.jpos.ee.pm.security.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.jpos.ee.pm.core.MD5;
 
 public class PMSecurityUser {
 
@@ -242,5 +243,18 @@ public class PMSecurityUser {
             }
         }
         return result;
+    }
+
+    /**
+     * Get a gravatar image
+     */
+    public String getGravatar() {
+        if (getEmail() == null) {
+            return "http://www.gravatar.com/avatar/00000000000000000000000000000000";
+        } else {
+            final MD5 md5 = new MD5();
+            final String hash = md5.calcMD5(getEmail());
+            return "http://www.gravatar.com/avatar/" + hash;
+        }
     }
 }
